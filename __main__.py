@@ -4,9 +4,8 @@ import logging as log
 import datetime as dt
 from time import sleep
 
-cascPath = "haarcascade_frontalface_default.xml"
-faceCascade = cv2.CascadeClassifier(cascPath)
-log.basicConfig(filename='webcam.log',level=log.INFO)
+cascPath = "haarcascade_frontalface_default.xml"  # model for facial recognition
+faceCascade = cv2.CascadeClassifier(cascPath) # load model
 
 video_capture = cv2.VideoCapture(0)
 anterior = 0
@@ -20,9 +19,9 @@ while True:
     # Capture frame-by-frame
     ret, frame = video_capture.read()
 
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) # convert image to usable image
 
-    faces = faceCascade.detectMultiScale(
+    faces = faceCascade.detectMultiScale( # detect faces
         gray,
         scaleFactor=1.2,
         minNeighbors=5,
@@ -31,16 +30,14 @@ while True:
 
     # Draw a rectangle around the faces
     for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2) # draw rectanble on every face
 
     if anterior != len(faces):
         anterior = len(faces)
-        print("faces: "+str(len(faces))+" at "+str(dt.datetime.now()))
-
+        print("faces: " + str(len(faces)) + " at " + str(dt.datetime.now()))
 
     # Display the resulting frame
     cv2.imshow('Video', frame)
-
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
